@@ -7,5 +7,9 @@ A small utility to automatically set your resolution to a defined game resolutio
 - HDR can be enabled or disabled per preset, or if the checkbox is left in the default (indeterminate) state then HDR will not be toggled when that preset is applied
 - HDR can also be manually toggled through the tray icon
 
+## Note
+Non Steam games added to Steam will also be recognized, but this relies on detecting the Steam Overlay rather than the running AppID.
+So make sure you don't disable the Steam Overlay for those games (it should be enabled by default), or the detection won't work.
+
 ## Screenshot
 <img width="1397" height="682" alt="image" src="https://github.com/user-attachments/assets/d364cc05-6293-444e-b003-e57736c245ff" />
