@@ -1,5 +1,11 @@
 # SteamResChanger
 A small utility to automatically set your resolution to a defined game resolution when any game is started from Steam, and set it back upon closing.
 
+## Features
+- Detects when any game is started through Steam and automatically applies the game resolution preset
+- Multiple desktop resolution presets to allow easy switching via tray context menu
+- HDR can be enabled or disabled per preset, or if the checkbox is left in the default (indeterminate) state then HDR will not be toggled when that preset is applied
+- HDR can also be manually toggled through the tray icon
+
 ## Screenshot
 <img width="1397" height="682" alt="image" src="https://github.com/user-attachments/assets/d364cc05-6293-444e-b003-e57736c245ff" />
