@@ -16,6 +16,8 @@ namespace SteamResChanger
         private ToolStripMenuItem _itmPause;
         private ToolStripMenuItem _itmActiveRes;
         private ToolStripMenuItem _itmGameRes;
+        private ToolStripMenuItem _itmHdr;
+        private ToolStripItem _itmHdrSeparator;
         private ToolStripMenuItem[] _itmPresetRes = Array.Empty<ToolStripMenuItem>();
 
         public TrayApplicationContext()
@@ -38,6 +40,11 @@ namespace SteamResChanger
             _itmGameRes = (ToolStripMenuItem)_menu.Items.Add(" &Game Resolution", null, mnuResolution_Click);
 
             _menu.Items.Add(new ToolStripSeparator());
+
+            _itmHdr = (ToolStripMenuItem)_menu.Items.Add(" &HDR", null, mnuHdr_Click);
+
+            _itmHdrSeparator = new ToolStripSeparator();
+            _menu.Items.Add(_itmHdrSeparator);
 
             _menu.Items.Add(" &Exit", null, mnuExit_Click);
 
@@ -116,6 +123,19 @@ namespace SteamResChanger
                 _itmGameRes.Checked = _form.Config.GameRes.Equals(activeRes);
                 _itmGameRes.Tag = _form.Config.GameRes;
 
+                try
+                {
+                    var primaryDisplay = HdrHelper.GetDisplays().First();
+                    _itmHdr.Visible = primaryDisplay.SupportsHDR;
+                    _itmHdrSeparator.Visible = primaryDisplay.SupportsHDR;
+                    _itmHdr.Checked = primaryDisplay.IsHDREnabled;
+                }
+                catch
+                {
+                    _itmHdr.Visible = false;
+                    _itmHdrSeparator.Visible = false;
+                }
+
                 foreach (var itm in _itmPresetRes)
                     _menu.Items.Remove(itm);
 
@@ -140,6 +160,12 @@ namespace SteamResChanger
         {
             if (_form != null)
                 _form.IsPaused = !_form.IsPaused;
+        }
+
+        private void mnuHdr_Click(object? sender, EventArgs e)
+        {
+            var hdrEnabled = ((ToolStripMenuItem)sender!).Checked;
+            HdrHelper.SetHDRStateForDisplay(0, !hdrEnabled);
         }
 
         private void mnuResolution_Click(object? sender, EventArgs e)
