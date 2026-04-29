@@ -60,7 +60,7 @@ namespace SteamResChanger
 
             _trayIcon.MouseDoubleClick += mnuSettings_Click;
 
-            if (_form.Config.DesktopRes.Length == 0 || _form.Config.DesktopRes.All(res => res.Equals(_form.Config.GameRes)))
+            if (_form.Config.DesktopRes.Length == 0 || _form.Config.DesktopRes.All(res => res.Equals(_form.Config.GameRes, WithHdr.IfNotNull)))
             {
                 _form.Show();
                 MessageBox.Show(_form, "You have not configured the application yet.\n\nYou should set a desired game resolution (that is different from your desktop resolution)\n\nYou can optionally also add multiple desktop resolution presets that can be accessed from the tray icon.", "Steam Resolution Changer", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -70,7 +70,7 @@ namespace SteamResChanger
         // Make absolutely sure the WMI ManagementEventWatcher always gets disposed properly.
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            ShowErrorMessage(e.ExceptionObject as Exception, e.IsTerminating);
+            MessageBoxExtensions.ShowErrorMessage(e.ExceptionObject as Exception, e.IsTerminating);
 
             if (e.IsTerminating)
                 SteamHelper.UnmonitorAll();
@@ -78,34 +78,9 @@ namespace SteamResChanger
 
         private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            ShowErrorMessage(e.Exception, false, true);
+            MessageBoxExtensions.ShowErrorMessage(e.Exception, false, true);
 
             SteamHelper.UnmonitorAll();
-        }
-
-        private static string TakeLines(string text, int lines, string lineBreak = "\n")
-        {
-            var split = text.Split('\n').Select(s => s.TrimEnd('\r').Trim()).ToArray();
-            return string.Join(lineBreak, split.Take(lines));
-        }
-
-        private void ShowErrorMessage(Exception? ex, bool fatal, bool thread = false)
-        {
-            string msg;
-            if (fatal)
-                msg = "Fatal exception occurred. The program will close.";
-            else if (thread)
-                msg = "Thread exception occurred.";
-            else
-                msg = "Exception occurred.";
-
-            if (ex != null)
-            {
-                msg += $"\n({ex.GetType()}): {ex.Message}";
-                msg += "\n\nStack trace:\n" + ex.StackTrace;
-            }
-
-            MessageBox.Show(TakeLines(msg, 30), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void Menu_Opening(object? sender, System.ComponentModel.CancelEventArgs e)
@@ -120,7 +95,7 @@ namespace SteamResChanger
                 _itmActiveRes.Tag = activeRes;
 
                 _itmGameRes.Text = " &Game Resolution: " + _form.Config.GameRes.ToString();
-                _itmGameRes.Checked = _form.Config.GameRes.Equals(activeRes);
+                _itmGameRes.Checked = _form.Config.GameRes.Equals(activeRes, WithHdr.IfNotNull);
                 _itmGameRes.Tag = _form.Config.GameRes;
 
                 try
@@ -139,7 +114,7 @@ namespace SteamResChanger
                 foreach (var itm in _itmPresetRes)
                     _menu.Items.Remove(itm);
 
-                _itmPresetRes = _form.Config.DesktopRes.Select((res, index) => new ToolStripMenuItem($" &Preset {index + 1}: {res.ToString()}", null, mnuResolution_Click) { Checked = res.Equals(activeRes), Tag = res }).ToArray();
+                _itmPresetRes = _form.Config.DesktopRes.Select((res, index) => new ToolStripMenuItem($" &Preset {index + 1}: {res.ToString()}", null, mnuResolution_Click) { Checked = res.Equals(activeRes, WithHdr.IfNotNull), Tag = res }).ToArray();
 
                 var startIndex = _menu.Items.IndexOf(_itmGameRes) + 1;
 
@@ -164,15 +139,27 @@ namespace SteamResChanger
 
         private void mnuHdr_Click(object? sender, EventArgs e)
         {
-            var hdrEnabled = ((ToolStripMenuItem)sender!).Checked;
-            HdrHelper.SetHDRStateForDisplay(0, !hdrEnabled);
+            var enableHdr = !((ToolStripMenuItem)sender!).Checked;
+            try { HdrHelper.SetHDRStateForDisplay(0, enableHdr); }
+            catch (Exception ex)
+            {
+                MessageBoxExtensions.ShowErrorMessage($"Failed to set HDR to {enableHdr.ToString()}", ex);
+            }
         }
 
         private void mnuResolution_Click(object? sender, EventArgs e)
         {
-            var selectedResolution = (DisplayMode)((ToolStripMenuItem)sender!).Tag!;
+            var res = (DisplayMode)((ToolStripMenuItem)sender!).Tag!;
+            DisplayHelper.SetResolution(res, _form?.Config.ShowTooltip ?? true);
 
-            DisplayHelper.SetResolution(selectedResolution, _form?.Config.ShowTooltip ?? true);
+            if (res.EnableHdr != null)
+            {
+                try { HdrHelper.SetHDRStateForDisplay(0, res.EnableHdr.Value); }
+                catch (Exception ex)
+                {
+                    MessageBoxExtensions.ShowErrorMessage($"Failed to set HDR to {res.EnableHdr.Value.ToString()}", ex);
+                }
+            }
         }
 
         private void mnuExit_Click(object? sender, EventArgs e)

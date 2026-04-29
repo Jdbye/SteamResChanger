@@ -20,7 +20,7 @@ namespace SteamResChanger
             set
             {
                 DesktopRes = value.Select(s => DisplayMode.TryFromString(s, SupportedResolutions)).OfType<DisplayMode>().ToArray()
-                    .DefaultIfEmpty(ResAtStart).Distinct().ToArray();
+                    .DefaultIfEmpty(ResAtStart).Distinct(DisplayModeComparer.WithHdr).ToArray();
             }
         }
 

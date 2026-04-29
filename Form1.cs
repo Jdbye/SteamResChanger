@@ -15,6 +15,7 @@ namespace SteamResChanger
         public bool IsExiting { get; set; } = false;
 
         readonly ComboBox[] comboPresets;
+        readonly CheckBox[] chkPresetsHDR;
 
         public SteamGameState steamGameState { get; private set; }
 
@@ -39,36 +40,40 @@ namespace SteamResChanger
 
             steamGameState = SteamHelper.GetSteamGameState(Config.IgnoreVrGames);
 #if DEBUG
+            KeyPreview = true;
             watch = Stopwatch.StartNew();
 #endif
 
-            if (!IsPaused && !steamGameState.IsRunning() && currentRes.Equals(Config.GameRes) && !Config.DesktopRes.Any(res => currentRes.Equals(res)))
-                DisplayHelper.SetResolution(Config.DesktopRes.First(), Config.ShowTooltip);
+            if (!IsPaused && !steamGameState.IsRunning() && currentRes.Equals(Config.GameRes, WithHdr.IfNotNull) && !Config.DesktopRes.Any(res => currentRes.Equals(res, WithHdr.IfNotNull)))
+            {
+                var res = Config.DesktopRes.First();
+                DisplayHelper.SetResolution(res, Config.ShowTooltip);
+
+                if (res.EnableHdr != null && currentRes.SupportsHdr == true)
+                {
+                    try { HdrHelper.SetHDRStateForDisplay(0, res.EnableHdr.Value); }
+                    catch (Exception ex)
+                    {
+                        MessageBoxExtensions.ShowErrorMessage($"Failed to set HDR to {res.EnableHdr.Value.ToString()}", ex);
+                    }
+                }
+            }
 
             InitializeComponent();
             comboPresets = [comboPreset1, comboPreset2, comboPreset3, comboPreset4, comboPreset5];
+            chkPresetsHDR = [chkPresetHDR1, chkPresetHDR2, chkPresetHDR3, chkPresetHDR4, chkPresetHDR5];
         }
 
-        private void SetSelectedItems()
-        {
-            SetComboBoxSelectedItem(comboGameRes, comboGameRes.Items, Config.GameRes);
-
-            chkIgnoreVrGames.Checked = Config.IgnoreVrGames;
-
-            for (int i = 0; i < comboPresets.Length; i++)
-                SetComboBoxSelectedItem(comboPresets[i], comboPresets[i].Items, i < Config.DesktopRes.Length ? Config.DesktopRes[i] : DisplayMode.None);
-        }
-
-        private void SetComboBoxItems(ComboBox combo, IEnumerable items, object? selected)
+        private void SetComboBoxItems(ComboBox combo, CheckBox hdr, IEnumerable items, object? selected)
         {
             combo.Items.Clear();
             foreach (var item in items)
                 combo.Items.Add(item);
 
-            SetComboBoxSelectedItem(combo, combo.Items, selected);
+            SetComboBoxSelectedItem(combo, hdr, combo.Items, selected);
         }
 
-        private void SetComboBoxSelectedItem(ComboBox combo, IEnumerable items, object? selected)
+        private void SetComboBoxSelectedItem(ComboBox combo, CheckBox hdr, IEnumerable items, object? selected)
         {
             if (selected == null)
             {
@@ -81,6 +86,13 @@ namespace SteamResChanger
                 if (selected.Equals(item))
                 {
                     combo.SelectedItem = item;
+                    if (selected is DisplayModeBase dm)
+                    {
+                        if (!hdr.Visible)
+                            hdr.CheckState = CheckState.Indeterminate;
+                        else
+                            hdr.CheckState = dm.EnableHdrCheckState;
+                    }
                     return;
                 }
             }
@@ -116,15 +128,17 @@ namespace SteamResChanger
 
                 DisplayModeBase[] _resolutionsWithNone = _none.Concat(_resolutions).ToArray();
 
-                SetComboBoxItems(comboGameRes, _resolutionsWithNone, Config.GameRes);
+                SetComboBoxItems(comboGameRes, chkGameHDR, _resolutionsWithNone, Config.GameRes);
 
                 chkShowTooltip.Checked = Config.ShowTooltip;
                 chkIgnoreVrGames.Checked = Config.IgnoreVrGames;
 
                 for (int i = 0; i < comboPresets.Length; i++)
-                    SetComboBoxItems(comboPresets[i], _resolutionsWithNone, i < Config.DesktopRes.Length ? Config.DesktopRes[i] : DisplayMode.None);
+                    SetComboBoxItems(comboPresets[i], chkPresetsHDR[i], _resolutionsWithNone, i < Config.DesktopRes.Length ? Config.DesktopRes[i] : DisplayMode.None);
 
                 chkRunOnStartup.Checked = StartupHelper.IsInStartup(appName);
+
+                ShowHDR(HdrHelper.GetDisplays().First().SupportsHDR);
 
                 Show();
                 WindowState = FormWindowState.Normal;
@@ -137,18 +151,53 @@ namespace SteamResChanger
             }
         }
 
+        public void ShowHDR(bool show)
+        {
+            var combo = comboGameRes;
+            var chk = chkGameHDR;
+
+            if (chk.Visible != show)
+            {
+                chk.Visible = show;
+                if (show)
+                    combo.Width -= 104;
+                else
+                    combo.Width += 104;
+            }
+
+            for (int i = 0; i < comboPresets.Length; i++)
+            {
+                combo = comboPresets[i];
+                chk = chkPresetsHDR[i];
+
+                if (chk.Visible != show)
+                {
+                    chk.Visible = show;
+                    if (show)
+                        combo.Width -= 104;
+                    else
+                        combo.Width += 104;
+                }
+            }
+        }
+
         private void butApply_Click(object sender, EventArgs e)
         {
             var currentRes = DisplayHelper.GetCurrentResolution();
-            var defaultRes = currentRes.Equals(Config.GameRes) ? Config.ResAtStart : currentRes;
+            var defaultRes = currentRes.Equals(Config.GameRes, WithHdr.IfNotNull) ? Config.ResAtStart : currentRes;
 
-            Config.GameRes = comboGameRes.SelectedItem as DisplayMode ?? defaultRes;
+            var gameRes = comboGameRes.SelectedItem as DisplayMode ?? defaultRes;
+            Config.GameRes = gameRes.SetHDR(chkGameHDR.CheckState);
 
             Config.ShowTooltip = chkShowTooltip.Checked;
             Config.IgnoreVrGames = chkIgnoreVrGames.Checked;
 
-            Config.DesktopRes = comboPresets.Select(combo => combo.SelectedItem).OfType<DisplayMode>()
-                .DefaultIfEmpty(defaultRes).Distinct().ToArray();
+            var modes = comboPresets.Select(combo => combo.SelectedItem).ToArray();
+            for (int i = 0; i < modes.Length; i++)
+                if (modes[i] is DisplayMode dm)
+                    modes[i] = dm.SetHDR(chkPresetsHDR[i].CheckState);
+
+            Config.DesktopRes = modes.OfType<DisplayMode>().DefaultIfEmpty(defaultRes).Distinct(DisplayModeComparer.WithHdr).ToArray();
 
             Config.Save();
 
@@ -195,24 +244,48 @@ namespace SteamResChanger
 
                 if (SteamGameStateExtensions.IsChanged(oldState, newState))
                 {
+                    var currentRes = DisplayHelper.GetCurrentResolution();
+                    DisplayMode res;
+
                     if (newState.IsRunning())
                     {
-                        var currentRes = DisplayHelper.GetCurrentResolution();
-                        if (!currentRes.Equals(Config.GameRes))
+                        res = Config.GameRes;
+
+                        if (!currentRes.Equals(Config.GameRes, WithHdr.IfNotNull))
                             resBeforeGameStarted = currentRes;
                         else
                             resBeforeGameStarted = null;
-
-                        DisplayHelper.SetResolution(Config.GameRes, Config.ShowTooltip);
                     }
                     else
                     {
-                        DisplayHelper.SetResolution(resBeforeGameStarted ?? Config.DesktopRes.First(), Config.ShowTooltip);
+                        res = resBeforeGameStarted ?? Config.DesktopRes.First();
+                    }
+
+                    DisplayHelper.SetResolution(res, Config.ShowTooltip);
+
+                    if (res.EnableHdr != null && currentRes.SupportsHdr == true)
+                    {
+                        try { HdrHelper.SetHDRStateForDisplay(0, res.EnableHdr.Value); }
+                        catch (Exception ex)
+                        {
+                            MessageBoxExtensions.ShowErrorMessage($"Failed to set HDR to {res.EnableHdr.Value.ToString()}", ex);
+                        }
                     }
                 }
 
                 steamGameState = newState;
             }
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+#if DEBUG
+            if ((e.KeyCode == Keys.F1 || e.KeyCode == Keys.F2) && e.Modifiers == Keys.Shift)
+            {
+                e.Handled = true;
+                ShowHDR(e.KeyCode == Keys.F1);
+            }
+#endif
         }
     }
 }

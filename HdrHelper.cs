@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SteamResChanger
 {
-    // This code borrowed from https://github.com/jdalley/command-palette-toggle-hdr
+    // This code borrowed from command-palette-toggle-hdr (https://github.com/jdalley/command-palette-toggle-hdr)
     public static class HdrHelper
     {
         [DllImport("user32.dll")]
@@ -253,7 +253,7 @@ namespace SteamResChanger
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="InvalidOperationException"></exception>
         /// <exception cref="Exception"></exception>
-        internal static void SetHDRStateForDisplay(int displayIndex, bool enable)
+        internal static bool SetHDRStateForDisplay(int displayIndex, bool enable, bool throwIfNotSupported = false)
         {
             var displays = GetDisplays();
 
@@ -266,7 +266,8 @@ namespace SteamResChanger
 
             if (!display.SupportsHDR)
             {
-                throw new InvalidOperationException($"Display at index {displayIndex} does not support HDR");
+                if (!throwIfNotSupported) return false;
+                throw new InvalidOperationException($"Display at index {displayIndex} ({display.DisplayName}) does not support HDR");
             }
 
             // Set HDR state for the selected display
@@ -285,8 +286,10 @@ namespace SteamResChanger
             int result = DisplayConfigSetDeviceInfo(ref setAdvancedColorState);
             if (result != DisplayConfigConstants.ERROR_SUCCESS)
             {
-                throw new InvalidOperationException($"Failed to set HDR state for display {displayIndex}. Error code: {result}");
+                throw new InvalidOperationException($"Failed to set HDR state for display {displayIndex} ({display.DisplayName}). Error code: {result}");
             }
+
+            return true;
         }
 
         /// <summary>
@@ -301,7 +304,7 @@ namespace SteamResChanger
             int result = GetDisplayConfigBufferSizes(QDC.ONLY_ACTIVE_PATHS, out uint pathCount, out uint modeCount);
             if (result != DisplayConfigConstants.ERROR_SUCCESS)
             {
-                throw new  Win32Exception(result, $"Failed to get display config buffer sizes. Error code: {result}");
+                throw new Win32Exception(result, $"Failed to get display config buffer sizes. Error code: {result}");
             }
 
             // Query the display configuration

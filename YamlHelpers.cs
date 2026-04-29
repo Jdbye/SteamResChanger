@@ -20,7 +20,7 @@ namespace SteamResChanger
                     .Build();
 
                     var instance = deserializer.Deserialize<T>(File.ReadAllText(fpath));
-                    WriteYaml<T>(path, instance); // Rewrite it to add the new config options
+                    WriteYaml<T>(path, instance); // Rewrite it to add any new config options
 
                     return instance;
                 }

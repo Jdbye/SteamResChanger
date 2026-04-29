@@ -46,6 +46,12 @@
             timerCheckGame = new System.Windows.Forms.Timer(components);
             label3 = new Label();
             chkShowTooltip = new CheckBox();
+            chkGameHDR = new CheckBox();
+            chkPresetHDR1 = new CheckBox();
+            chkPresetHDR2 = new CheckBox();
+            chkPresetHDR3 = new CheckBox();
+            chkPresetHDR4 = new CheckBox();
+            chkPresetHDR5 = new CheckBox();
             SuspendLayout();
             // 
             // label1
@@ -73,7 +79,7 @@
             comboGameRes.FormattingEnabled = true;
             comboGameRes.Location = new Point(22, 54);
             comboGameRes.Name = "comboGameRes";
-            comboGameRes.Size = new Size(660, 40);
+            comboGameRes.Size = new Size(556, 40);
             comboGameRes.TabIndex = 3;
             comboGameRes.Format += comboRes_Format;
             // 
@@ -132,7 +138,7 @@
             comboPreset1.FormattingEnabled = true;
             comboPreset1.Location = new Point(22, 178);
             comboPreset1.Name = "comboPreset1";
-            comboPreset1.Size = new Size(660, 40);
+            comboPreset1.Size = new Size(556, 40);
             comboPreset1.TabIndex = 8;
             comboPreset1.Format += comboRes_Format;
             // 
@@ -143,7 +149,7 @@
             comboPreset2.FormattingEnabled = true;
             comboPreset2.Location = new Point(22, 224);
             comboPreset2.Name = "comboPreset2";
-            comboPreset2.Size = new Size(660, 40);
+            comboPreset2.Size = new Size(556, 40);
             comboPreset2.TabIndex = 9;
             comboPreset2.Format += comboRes_Format;
             // 
@@ -154,7 +160,7 @@
             comboPreset3.FormattingEnabled = true;
             comboPreset3.Location = new Point(22, 270);
             comboPreset3.Name = "comboPreset3";
-            comboPreset3.Size = new Size(660, 40);
+            comboPreset3.Size = new Size(556, 40);
             comboPreset3.TabIndex = 10;
             comboPreset3.Format += comboRes_Format;
             // 
@@ -165,7 +171,7 @@
             comboPreset4.FormattingEnabled = true;
             comboPreset4.Location = new Point(22, 316);
             comboPreset4.Name = "comboPreset4";
-            comboPreset4.Size = new Size(660, 40);
+            comboPreset4.Size = new Size(556, 40);
             comboPreset4.TabIndex = 11;
             comboPreset4.Format += comboRes_Format;
             // 
@@ -176,7 +182,7 @@
             comboPreset5.FormattingEnabled = true;
             comboPreset5.Location = new Point(22, 362);
             comboPreset5.Name = "comboPreset5";
-            comboPreset5.Size = new Size(660, 40);
+            comboPreset5.Size = new Size(556, 40);
             comboPreset5.TabIndex = 12;
             comboPreset5.Format += comboRes_Format;
             // 
@@ -217,11 +223,101 @@
             chkShowTooltip.Text = "Show Tooltip on Change";
             chkShowTooltip.UseVisualStyleBackColor = true;
             // 
+            // chkGameHDR
+            // 
+            chkGameHDR.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            chkGameHDR.AutoSize = true;
+            chkGameHDR.Checked = true;
+            chkGameHDR.CheckState = CheckState.Indeterminate;
+            chkGameHDR.Location = new Point(588, 56);
+            chkGameHDR.Name = "chkGameHDR";
+            chkGameHDR.Size = new Size(94, 36);
+            chkGameHDR.TabIndex = 16;
+            chkGameHDR.Text = "HDR";
+            chkGameHDR.ThreeState = true;
+            chkGameHDR.UseVisualStyleBackColor = true;
+            // 
+            // chkPresetHDR1
+            // 
+            chkPresetHDR1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            chkPresetHDR1.AutoSize = true;
+            chkPresetHDR1.Checked = true;
+            chkPresetHDR1.CheckState = CheckState.Indeterminate;
+            chkPresetHDR1.Location = new Point(588, 180);
+            chkPresetHDR1.Name = "chkPresetHDR1";
+            chkPresetHDR1.Size = new Size(94, 36);
+            chkPresetHDR1.TabIndex = 17;
+            chkPresetHDR1.Text = "HDR";
+            chkPresetHDR1.ThreeState = true;
+            chkPresetHDR1.UseVisualStyleBackColor = true;
+            // 
+            // chkPresetHDR2
+            // 
+            chkPresetHDR2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            chkPresetHDR2.AutoSize = true;
+            chkPresetHDR2.Checked = true;
+            chkPresetHDR2.CheckState = CheckState.Indeterminate;
+            chkPresetHDR2.Location = new Point(588, 226);
+            chkPresetHDR2.Name = "chkPresetHDR2";
+            chkPresetHDR2.Size = new Size(94, 36);
+            chkPresetHDR2.TabIndex = 18;
+            chkPresetHDR2.Text = "HDR";
+            chkPresetHDR2.ThreeState = true;
+            chkPresetHDR2.UseVisualStyleBackColor = true;
+            // 
+            // chkPresetHDR3
+            // 
+            chkPresetHDR3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            chkPresetHDR3.AutoSize = true;
+            chkPresetHDR3.Checked = true;
+            chkPresetHDR3.CheckState = CheckState.Indeterminate;
+            chkPresetHDR3.Location = new Point(588, 272);
+            chkPresetHDR3.Name = "chkPresetHDR3";
+            chkPresetHDR3.Size = new Size(94, 36);
+            chkPresetHDR3.TabIndex = 19;
+            chkPresetHDR3.Text = "HDR";
+            chkPresetHDR3.ThreeState = true;
+            chkPresetHDR3.UseVisualStyleBackColor = true;
+            // 
+            // chkPresetHDR4
+            // 
+            chkPresetHDR4.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            chkPresetHDR4.AutoSize = true;
+            chkPresetHDR4.Checked = true;
+            chkPresetHDR4.CheckState = CheckState.Indeterminate;
+            chkPresetHDR4.Location = new Point(588, 318);
+            chkPresetHDR4.Name = "chkPresetHDR4";
+            chkPresetHDR4.Size = new Size(94, 36);
+            chkPresetHDR4.TabIndex = 20;
+            chkPresetHDR4.Text = "HDR";
+            chkPresetHDR4.ThreeState = true;
+            chkPresetHDR4.UseVisualStyleBackColor = true;
+            // 
+            // chkPresetHDR5
+            // 
+            chkPresetHDR5.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            chkPresetHDR5.AutoSize = true;
+            chkPresetHDR5.Checked = true;
+            chkPresetHDR5.CheckState = CheckState.Indeterminate;
+            chkPresetHDR5.Location = new Point(588, 364);
+            chkPresetHDR5.Name = "chkPresetHDR5";
+            chkPresetHDR5.Size = new Size(94, 36);
+            chkPresetHDR5.TabIndex = 21;
+            chkPresetHDR5.Text = "HDR";
+            chkPresetHDR5.ThreeState = true;
+            chkPresetHDR5.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(694, 523);
+            Controls.Add(chkPresetHDR5);
+            Controls.Add(chkPresetHDR4);
+            Controls.Add(chkPresetHDR3);
+            Controls.Add(chkPresetHDR2);
+            Controls.Add(chkPresetHDR1);
+            Controls.Add(chkGameHDR);
             Controls.Add(chkShowTooltip);
             Controls.Add(label3);
             Controls.Add(chkRunOnStartup);
@@ -246,6 +342,7 @@
             FormClosing += Form1_FormClosing;
             FormClosed += Form1_FormClosed;
             VisibleChanged += Form1_VisibleChanged;
+            KeyDown += Form1_KeyDown;
             Resize += Form1_Resize;
             ResumeLayout(false);
             PerformLayout();
@@ -268,5 +365,11 @@
         private System.Windows.Forms.Timer timerCheckGame;
         private Label label3;
         private CheckBox chkShowTooltip;
+        private CheckBox chkGameHDR;
+        private CheckBox chkPresetHDR1;
+        private CheckBox chkPresetHDR2;
+        private CheckBox chkPresetHDR3;
+        private CheckBox chkPresetHDR4;
+        private CheckBox chkPresetHDR5;
     }
 }
