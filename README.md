@@ -1,5 +1,7 @@
 # SteamResChanger
 A small utility to automatically set your resolution to a defined game resolution when any game is started from Steam, and set it back upon closing.
+This is useful if you prefer to run your games at a lower resolution for various reasons.
+For example, if you play on a TV with HDMI 2.0, which limits you to 1440p@120hz or 4K@60hz, and you want to play games at the higher refresh rate but use your desktop at 4K@60.
 
 ## Features
 - Detects when any game is started through Steam and automatically applies the game resolution preset
