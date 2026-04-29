@@ -68,9 +68,9 @@
             label2.AutoSize = true;
             label2.Location = new Point(22, 15);
             label2.Name = "label2";
-            label2.Size = new Size(630, 32);
+            label2.Size = new Size(653, 32);
             label2.TabIndex = 2;
-            label2.Text = "Game Resolution: (applied when any Steam game started)";
+            label2.Text = "Game Resolution: (applied when any Steam game is started)";
             // 
             // comboGameRes
             // 
