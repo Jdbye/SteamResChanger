@@ -87,7 +87,7 @@ namespace SteamResChanger
             var win = IsWinPressed();
 
             // Clear
-            if ((key == Keys.Back || key == Keys.Delete) && !ctrl && !shift && !alt && !win)
+            if ((key == Keys.Back || key == Keys.Delete || key == Keys.Escape) && !ctrl && !shift && !alt && !win)
             {
                 Key = Keys.None;
                 Modifiers = SteamResChanger.ModifierKeys.None;

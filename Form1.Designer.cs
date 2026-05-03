@@ -501,7 +501,7 @@
             // 
             chkRunOnStartup.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             chkRunOnStartup.AutoSize = true;
-            chkRunOnStartup.Location = new Point(12, 755);
+            chkRunOnStartup.Location = new Point(22, 755);
             chkRunOnStartup.Name = "chkRunOnStartup";
             chkRunOnStartup.Size = new Size(206, 36);
             chkRunOnStartup.TabIndex = 41;
