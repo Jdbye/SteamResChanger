@@ -57,6 +57,19 @@
             chkPresetHDR8 = new CheckBox();
             chkPresetHDR9 = new CheckBox();
             chkPresetHDR0 = new CheckBox();
+            hotkeyGame = new HotkeyBox();
+            hotkeyPreset1 = new HotkeyBox();
+            hotkeyPreset2 = new HotkeyBox();
+            hotkeyPreset3 = new HotkeyBox();
+            hotkeyPreset4 = new HotkeyBox();
+            hotkeyPreset5 = new HotkeyBox();
+            hotkeyPreset6 = new HotkeyBox();
+            hotkeyPreset7 = new HotkeyBox();
+            hotkeyPreset8 = new HotkeyBox();
+            hotkeyPreset9 = new HotkeyBox();
+            hotkeyPreset0 = new HotkeyBox();
+            labelHotkeyHDR = new Label();
+            hotkeyHDR = new HotkeyBox();
             chkRunOnStartup = new CheckBox();
             butApply = new Button();
             butOK = new Button();
@@ -67,7 +80,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(22, 139);
+            label1.Location = new Point(22, 147);
             label1.Name = "label1";
             label1.Size = new Size(308, 32);
             label1.TabIndex = 1;
@@ -86,7 +99,7 @@
             // 
             label3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             label3.AutoSize = true;
-            label3.Location = new Point(22, 639);
+            label3.Location = new Point(22, 693);
             label3.Name = "label3";
             label3.Size = new Size(571, 32);
             label3.TabIndex = 3;
@@ -94,7 +107,6 @@
             // 
             // comboGameRes
             // 
-            comboGameRes.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboGameRes.DropDownStyle = ComboBoxStyle.DropDownList;
             comboGameRes.FormattingEnabled = true;
             comboGameRes.Location = new Point(22, 54);
@@ -105,7 +117,6 @@
             // 
             // chkGameHDR
             // 
-            chkGameHDR.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             chkGameHDR.AutoSize = true;
             chkGameHDR.Checked = true;
             chkGameHDR.CheckState = CheckState.Indeterminate;
@@ -119,9 +130,8 @@
             // 
             // chkShowTooltip
             // 
-            chkShowTooltip.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             chkShowTooltip.AutoSize = true;
-            chkShowTooltip.Location = new Point(130, 100);
+            chkShowTooltip.Location = new Point(22, 100);
             chkShowTooltip.Name = "chkShowTooltip";
             chkShowTooltip.Size = new Size(308, 36);
             chkShowTooltip.TabIndex = 6;
@@ -130,11 +140,10 @@
             // 
             // chkIgnoreVrGames
             // 
-            chkIgnoreVrGames.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             chkIgnoreVrGames.AutoSize = true;
             chkIgnoreVrGames.Checked = true;
             chkIgnoreVrGames.CheckState = CheckState.Checked;
-            chkIgnoreVrGames.Location = new Point(452, 100);
+            chkIgnoreVrGames.Location = new Point(348, 100);
             chkIgnoreVrGames.Name = "chkIgnoreVrGames";
             chkIgnoreVrGames.Size = new Size(230, 36);
             chkIgnoreVrGames.TabIndex = 7;
@@ -143,10 +152,9 @@
             // 
             // comboPreset1
             // 
-            comboPreset1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboPreset1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboPreset1.FormattingEnabled = true;
-            comboPreset1.Location = new Point(22, 178);
+            comboPreset1.Location = new Point(22, 186);
             comboPreset1.Name = "comboPreset1";
             comboPreset1.Size = new Size(556, 40);
             comboPreset1.TabIndex = 8;
@@ -154,10 +162,9 @@
             // 
             // comboPreset2
             // 
-            comboPreset2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboPreset2.DropDownStyle = ComboBoxStyle.DropDownList;
             comboPreset2.FormattingEnabled = true;
-            comboPreset2.Location = new Point(22, 224);
+            comboPreset2.Location = new Point(22, 232);
             comboPreset2.Name = "comboPreset2";
             comboPreset2.Size = new Size(556, 40);
             comboPreset2.TabIndex = 9;
@@ -165,10 +172,9 @@
             // 
             // comboPreset3
             // 
-            comboPreset3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboPreset3.DropDownStyle = ComboBoxStyle.DropDownList;
             comboPreset3.FormattingEnabled = true;
-            comboPreset3.Location = new Point(22, 270);
+            comboPreset3.Location = new Point(22, 278);
             comboPreset3.Name = "comboPreset3";
             comboPreset3.Size = new Size(556, 40);
             comboPreset3.TabIndex = 10;
@@ -176,10 +182,9 @@
             // 
             // comboPreset4
             // 
-            comboPreset4.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboPreset4.DropDownStyle = ComboBoxStyle.DropDownList;
             comboPreset4.FormattingEnabled = true;
-            comboPreset4.Location = new Point(22, 316);
+            comboPreset4.Location = new Point(22, 324);
             comboPreset4.Name = "comboPreset4";
             comboPreset4.Size = new Size(556, 40);
             comboPreset4.TabIndex = 11;
@@ -187,10 +192,9 @@
             // 
             // comboPreset5
             // 
-            comboPreset5.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboPreset5.DropDownStyle = ComboBoxStyle.DropDownList;
             comboPreset5.FormattingEnabled = true;
-            comboPreset5.Location = new Point(22, 362);
+            comboPreset5.Location = new Point(22, 370);
             comboPreset5.Name = "comboPreset5";
             comboPreset5.Size = new Size(556, 40);
             comboPreset5.TabIndex = 12;
@@ -198,10 +202,9 @@
             // 
             // comboPreset6
             // 
-            comboPreset6.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboPreset6.DropDownStyle = ComboBoxStyle.DropDownList;
             comboPreset6.FormattingEnabled = true;
-            comboPreset6.Location = new Point(22, 408);
+            comboPreset6.Location = new Point(22, 416);
             comboPreset6.Name = "comboPreset6";
             comboPreset6.Size = new Size(556, 40);
             comboPreset6.TabIndex = 13;
@@ -209,10 +212,9 @@
             // 
             // comboPreset7
             // 
-            comboPreset7.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboPreset7.DropDownStyle = ComboBoxStyle.DropDownList;
             comboPreset7.FormattingEnabled = true;
-            comboPreset7.Location = new Point(22, 454);
+            comboPreset7.Location = new Point(22, 462);
             comboPreset7.Name = "comboPreset7";
             comboPreset7.Size = new Size(556, 40);
             comboPreset7.TabIndex = 14;
@@ -220,10 +222,9 @@
             // 
             // comboPreset8
             // 
-            comboPreset8.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboPreset8.DropDownStyle = ComboBoxStyle.DropDownList;
             comboPreset8.FormattingEnabled = true;
-            comboPreset8.Location = new Point(22, 500);
+            comboPreset8.Location = new Point(22, 508);
             comboPreset8.Name = "comboPreset8";
             comboPreset8.Size = new Size(556, 40);
             comboPreset8.TabIndex = 15;
@@ -231,10 +232,9 @@
             // 
             // comboPreset9
             // 
-            comboPreset9.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboPreset9.DropDownStyle = ComboBoxStyle.DropDownList;
             comboPreset9.FormattingEnabled = true;
-            comboPreset9.Location = new Point(22, 546);
+            comboPreset9.Location = new Point(22, 554);
             comboPreset9.Name = "comboPreset9";
             comboPreset9.Size = new Size(556, 40);
             comboPreset9.TabIndex = 16;
@@ -242,10 +242,9 @@
             // 
             // comboPreset0
             // 
-            comboPreset0.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboPreset0.DropDownStyle = ComboBoxStyle.DropDownList;
             comboPreset0.FormattingEnabled = true;
-            comboPreset0.Location = new Point(22, 592);
+            comboPreset0.Location = new Point(22, 600);
             comboPreset0.Name = "comboPreset0";
             comboPreset0.Size = new Size(556, 40);
             comboPreset0.TabIndex = 17;
@@ -253,11 +252,10 @@
             // 
             // chkPresetHDR1
             // 
-            chkPresetHDR1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             chkPresetHDR1.AutoSize = true;
             chkPresetHDR1.Checked = true;
             chkPresetHDR1.CheckState = CheckState.Indeterminate;
-            chkPresetHDR1.Location = new Point(588, 180);
+            chkPresetHDR1.Location = new Point(588, 188);
             chkPresetHDR1.Name = "chkPresetHDR1";
             chkPresetHDR1.Size = new Size(94, 36);
             chkPresetHDR1.TabIndex = 18;
@@ -267,11 +265,10 @@
             // 
             // chkPresetHDR2
             // 
-            chkPresetHDR2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             chkPresetHDR2.AutoSize = true;
             chkPresetHDR2.Checked = true;
             chkPresetHDR2.CheckState = CheckState.Indeterminate;
-            chkPresetHDR2.Location = new Point(588, 226);
+            chkPresetHDR2.Location = new Point(588, 234);
             chkPresetHDR2.Name = "chkPresetHDR2";
             chkPresetHDR2.Size = new Size(94, 36);
             chkPresetHDR2.TabIndex = 19;
@@ -281,11 +278,10 @@
             // 
             // chkPresetHDR3
             // 
-            chkPresetHDR3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             chkPresetHDR3.AutoSize = true;
             chkPresetHDR3.Checked = true;
             chkPresetHDR3.CheckState = CheckState.Indeterminate;
-            chkPresetHDR3.Location = new Point(588, 272);
+            chkPresetHDR3.Location = new Point(588, 280);
             chkPresetHDR3.Name = "chkPresetHDR3";
             chkPresetHDR3.Size = new Size(94, 36);
             chkPresetHDR3.TabIndex = 20;
@@ -295,11 +291,10 @@
             // 
             // chkPresetHDR4
             // 
-            chkPresetHDR4.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             chkPresetHDR4.AutoSize = true;
             chkPresetHDR4.Checked = true;
             chkPresetHDR4.CheckState = CheckState.Indeterminate;
-            chkPresetHDR4.Location = new Point(588, 318);
+            chkPresetHDR4.Location = new Point(588, 326);
             chkPresetHDR4.Name = "chkPresetHDR4";
             chkPresetHDR4.Size = new Size(94, 36);
             chkPresetHDR4.TabIndex = 21;
@@ -309,11 +304,10 @@
             // 
             // chkPresetHDR5
             // 
-            chkPresetHDR5.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             chkPresetHDR5.AutoSize = true;
             chkPresetHDR5.Checked = true;
             chkPresetHDR5.CheckState = CheckState.Indeterminate;
-            chkPresetHDR5.Location = new Point(588, 364);
+            chkPresetHDR5.Location = new Point(588, 372);
             chkPresetHDR5.Name = "chkPresetHDR5";
             chkPresetHDR5.Size = new Size(94, 36);
             chkPresetHDR5.TabIndex = 22;
@@ -323,11 +317,10 @@
             // 
             // chkPresetHDR6
             // 
-            chkPresetHDR6.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             chkPresetHDR6.AutoSize = true;
             chkPresetHDR6.Checked = true;
             chkPresetHDR6.CheckState = CheckState.Indeterminate;
-            chkPresetHDR6.Location = new Point(588, 410);
+            chkPresetHDR6.Location = new Point(588, 418);
             chkPresetHDR6.Name = "chkPresetHDR6";
             chkPresetHDR6.Size = new Size(94, 36);
             chkPresetHDR6.TabIndex = 23;
@@ -337,11 +330,10 @@
             // 
             // chkPresetHDR7
             // 
-            chkPresetHDR7.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             chkPresetHDR7.AutoSize = true;
             chkPresetHDR7.Checked = true;
             chkPresetHDR7.CheckState = CheckState.Indeterminate;
-            chkPresetHDR7.Location = new Point(588, 456);
+            chkPresetHDR7.Location = new Point(588, 464);
             chkPresetHDR7.Name = "chkPresetHDR7";
             chkPresetHDR7.Size = new Size(94, 36);
             chkPresetHDR7.TabIndex = 24;
@@ -351,11 +343,10 @@
             // 
             // chkPresetHDR8
             // 
-            chkPresetHDR8.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             chkPresetHDR8.AutoSize = true;
             chkPresetHDR8.Checked = true;
             chkPresetHDR8.CheckState = CheckState.Indeterminate;
-            chkPresetHDR8.Location = new Point(588, 502);
+            chkPresetHDR8.Location = new Point(588, 510);
             chkPresetHDR8.Name = "chkPresetHDR8";
             chkPresetHDR8.Size = new Size(94, 36);
             chkPresetHDR8.TabIndex = 25;
@@ -365,11 +356,10 @@
             // 
             // chkPresetHDR9
             // 
-            chkPresetHDR9.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             chkPresetHDR9.AutoSize = true;
             chkPresetHDR9.Checked = true;
             chkPresetHDR9.CheckState = CheckState.Indeterminate;
-            chkPresetHDR9.Location = new Point(588, 548);
+            chkPresetHDR9.Location = new Point(588, 556);
             chkPresetHDR9.Name = "chkPresetHDR9";
             chkPresetHDR9.Size = new Size(94, 36);
             chkPresetHDR9.TabIndex = 26;
@@ -379,11 +369,10 @@
             // 
             // chkPresetHDR0
             // 
-            chkPresetHDR0.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             chkPresetHDR0.AutoSize = true;
             chkPresetHDR0.Checked = true;
             chkPresetHDR0.CheckState = CheckState.Indeterminate;
-            chkPresetHDR0.Location = new Point(588, 594);
+            chkPresetHDR0.Location = new Point(588, 602);
             chkPresetHDR0.Name = "chkPresetHDR0";
             chkPresetHDR0.Size = new Size(94, 36);
             chkPresetHDR0.TabIndex = 27;
@@ -391,24 +380,141 @@
             chkPresetHDR0.ThreeState = true;
             chkPresetHDR0.UseVisualStyleBackColor = true;
             // 
+            // hotkeyGame
+            // 
+            hotkeyGame.Location = new Point(688, 53);
+            hotkeyGame.Name = "hotkeyGame";
+            hotkeyGame.ReadOnly = true;
+            hotkeyGame.Size = new Size(387, 39);
+            hotkeyGame.TabIndex = 28;
+            hotkeyGame.Text = "Click to set hotkey ...";
+            // 
+            // hotkeyPreset1
+            // 
+            hotkeyPreset1.Location = new Point(688, 185);
+            hotkeyPreset1.Name = "hotkeyPreset1";
+            hotkeyPreset1.ReadOnly = true;
+            hotkeyPreset1.Size = new Size(387, 39);
+            hotkeyPreset1.TabIndex = 29;
+            hotkeyPreset1.Text = "Click to set hotkey ...";
+            // 
+            // hotkeyPreset2
+            // 
+            hotkeyPreset2.Location = new Point(688, 231);
+            hotkeyPreset2.Name = "hotkeyPreset2";
+            hotkeyPreset2.ReadOnly = true;
+            hotkeyPreset2.Size = new Size(387, 39);
+            hotkeyPreset2.TabIndex = 30;
+            hotkeyPreset2.Text = "Click to set hotkey ...";
+            // 
+            // hotkeyPreset3
+            // 
+            hotkeyPreset3.Location = new Point(688, 277);
+            hotkeyPreset3.Name = "hotkeyPreset3";
+            hotkeyPreset3.ReadOnly = true;
+            hotkeyPreset3.Size = new Size(387, 39);
+            hotkeyPreset3.TabIndex = 31;
+            hotkeyPreset3.Text = "Click to set hotkey ...";
+            // 
+            // hotkeyPreset4
+            // 
+            hotkeyPreset4.Location = new Point(688, 323);
+            hotkeyPreset4.Name = "hotkeyPreset4";
+            hotkeyPreset4.ReadOnly = true;
+            hotkeyPreset4.Size = new Size(387, 39);
+            hotkeyPreset4.TabIndex = 32;
+            hotkeyPreset4.Text = "Click to set hotkey ...";
+            // 
+            // hotkeyPreset5
+            // 
+            hotkeyPreset5.Location = new Point(688, 369);
+            hotkeyPreset5.Name = "hotkeyPreset5";
+            hotkeyPreset5.ReadOnly = true;
+            hotkeyPreset5.Size = new Size(387, 39);
+            hotkeyPreset5.TabIndex = 33;
+            hotkeyPreset5.Text = "Click to set hotkey ...";
+            // 
+            // hotkeyPreset6
+            // 
+            hotkeyPreset6.Location = new Point(688, 415);
+            hotkeyPreset6.Name = "hotkeyPreset6";
+            hotkeyPreset6.ReadOnly = true;
+            hotkeyPreset6.Size = new Size(387, 39);
+            hotkeyPreset6.TabIndex = 34;
+            hotkeyPreset6.Text = "Click to set hotkey ...";
+            // 
+            // hotkeyPreset7
+            // 
+            hotkeyPreset7.Location = new Point(688, 461);
+            hotkeyPreset7.Name = "hotkeyPreset7";
+            hotkeyPreset7.ReadOnly = true;
+            hotkeyPreset7.Size = new Size(387, 39);
+            hotkeyPreset7.TabIndex = 35;
+            hotkeyPreset7.Text = "Click to set hotkey ...";
+            // 
+            // hotkeyPreset8
+            // 
+            hotkeyPreset8.Location = new Point(688, 507);
+            hotkeyPreset8.Name = "hotkeyPreset8";
+            hotkeyPreset8.ReadOnly = true;
+            hotkeyPreset8.Size = new Size(387, 39);
+            hotkeyPreset8.TabIndex = 36;
+            hotkeyPreset8.Text = "Click to set hotkey ...";
+            // 
+            // hotkeyPreset9
+            // 
+            hotkeyPreset9.Location = new Point(688, 553);
+            hotkeyPreset9.Name = "hotkeyPreset9";
+            hotkeyPreset9.ReadOnly = true;
+            hotkeyPreset9.Size = new Size(387, 39);
+            hotkeyPreset9.TabIndex = 37;
+            hotkeyPreset9.Text = "Click to set hotkey ...";
+            // 
+            // hotkeyPreset0
+            // 
+            hotkeyPreset0.Location = new Point(688, 601);
+            hotkeyPreset0.Name = "hotkeyPreset0";
+            hotkeyPreset0.ReadOnly = true;
+            hotkeyPreset0.Size = new Size(387, 39);
+            hotkeyPreset0.TabIndex = 38;
+            hotkeyPreset0.Text = "Click to set hotkey ...";
+            // 
+            // labelHotkeyHDR
+            // 
+            labelHotkeyHDR.AutoSize = true;
+            labelHotkeyHDR.Location = new Point(536, 651);
+            labelHotkeyHDR.Name = "labelHotkeyHDR";
+            labelHotkeyHDR.Size = new Size(146, 32);
+            labelHotkeyHDR.TabIndex = 39;
+            labelHotkeyHDR.Text = "HDR Toggle:";
+            // 
+            // hotkeyHDR
+            // 
+            hotkeyHDR.Location = new Point(688, 648);
+            hotkeyHDR.Name = "hotkeyHDR";
+            hotkeyHDR.ReadOnly = true;
+            hotkeyHDR.Size = new Size(354, 39);
+            hotkeyHDR.TabIndex = 40;
+            hotkeyHDR.Text = "Click to set hotkey ...";
+            // 
             // chkRunOnStartup
             // 
             chkRunOnStartup.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             chkRunOnStartup.AutoSize = true;
-            chkRunOnStartup.Location = new Point(12, 701);
+            chkRunOnStartup.Location = new Point(12, 755);
             chkRunOnStartup.Name = "chkRunOnStartup";
             chkRunOnStartup.Size = new Size(206, 36);
-            chkRunOnStartup.TabIndex = 28;
+            chkRunOnStartup.TabIndex = 41;
             chkRunOnStartup.Text = "Run on Startup";
             chkRunOnStartup.UseVisualStyleBackColor = true;
             // 
             // butApply
             // 
             butApply.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            butApply.Location = new Point(220, 695);
+            butApply.Location = new Point(580, 749);
             butApply.Name = "butApply";
             butApply.Size = new Size(150, 46);
-            butApply.TabIndex = 29;
+            butApply.TabIndex = 42;
             butApply.Text = "&Apply";
             butApply.UseVisualStyleBackColor = true;
             butApply.Click += butApply_Click;
@@ -417,10 +523,10 @@
             // 
             butOK.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             butOK.DialogResult = DialogResult.OK;
-            butOK.Location = new Point(376, 695);
+            butOK.Location = new Point(736, 749);
             butOK.Name = "butOK";
             butOK.Size = new Size(150, 46);
-            butOK.TabIndex = 30;
+            butOK.TabIndex = 43;
             butOK.Text = "&OK";
             butOK.UseVisualStyleBackColor = true;
             butOK.Click += butOK_Click;
@@ -429,10 +535,10 @@
             // 
             butCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             butCancel.DialogResult = DialogResult.Cancel;
-            butCancel.Location = new Point(532, 695);
+            butCancel.Location = new Point(892, 749);
             butCancel.Name = "butCancel";
             butCancel.Size = new Size(150, 46);
-            butCancel.TabIndex = 31;
+            butCancel.TabIndex = 44;
             butCancel.Text = "&Cancel";
             butCancel.UseVisualStyleBackColor = true;
             butCancel.Click += butCancel_Click;
@@ -447,11 +553,24 @@
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(694, 753);
+            ClientSize = new Size(1054, 807);
             Controls.Add(butCancel);
             Controls.Add(butOK);
             Controls.Add(butApply);
             Controls.Add(chkRunOnStartup);
+            Controls.Add(hotkeyHDR);
+            Controls.Add(labelHotkeyHDR);
+            Controls.Add(hotkeyPreset0);
+            Controls.Add(hotkeyPreset9);
+            Controls.Add(hotkeyPreset8);
+            Controls.Add(hotkeyPreset7);
+            Controls.Add(hotkeyPreset6);
+            Controls.Add(hotkeyPreset5);
+            Controls.Add(hotkeyPreset4);
+            Controls.Add(hotkeyPreset3);
+            Controls.Add(hotkeyPreset2);
+            Controls.Add(hotkeyPreset1);
+            Controls.Add(hotkeyGame);
             Controls.Add(chkPresetHDR0);
             Controls.Add(chkPresetHDR9);
             Controls.Add(chkPresetHDR8);
@@ -479,9 +598,10 @@
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MinimumSize = new Size(720, 824);
+            MinimumSize = new Size(1080, 831);
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Steam Resolution Changer";
@@ -522,6 +642,19 @@
         private CheckBox chkPresetHDR8;
         private CheckBox chkPresetHDR9;
         private CheckBox chkPresetHDR0;
+        private HotkeyBox hotkeyGame;
+        private HotkeyBox hotkeyPreset1;
+        private HotkeyBox hotkeyPreset2;
+        private HotkeyBox hotkeyPreset3;
+        private HotkeyBox hotkeyPreset4;
+        private HotkeyBox hotkeyPreset5;
+        private HotkeyBox hotkeyPreset6;
+        private HotkeyBox hotkeyPreset7;
+        private HotkeyBox hotkeyPreset8;
+        private HotkeyBox hotkeyPreset9;
+        private HotkeyBox hotkeyPreset0;
+        private Label labelHotkeyHDR;
+        private HotkeyBox hotkeyHDR;
         private CheckBox chkRunOnStartup;
         private Button butApply;
         private Button butOK;

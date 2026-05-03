@@ -150,6 +150,8 @@ namespace SteamResChanger
         public virtual uint Height => 0;
         public virtual uint Frequency => 0;
         public virtual bool? EnableHdr => null;
+        public virtual Hotkey? Hotkey { get => null; protected set { } }
+
         public CheckState EnableHdrCheckState
         {
             get => EnableHdr switch
@@ -160,7 +162,7 @@ namespace SteamResChanger
             };
         }
 
-        protected bool? EnableHdrFromCheckState(CheckState checkState) => checkState switch
+        protected static bool? EnableHdrFromCheckState(CheckState checkState) => checkState switch
         {
             CheckState.Unchecked => false,
             CheckState.Checked => true,
@@ -223,13 +225,13 @@ namespace SteamResChanger
         }
 
         public override string ToString()
-            => ToString(this.Width, this.Height, this.Frequency, this.EnableHdr);
+            => ToString(this.Width, this.Height, this.Frequency, this.EnableHdr, this.Hotkey);
 
-        public static string ToString(int width, int height, int frequency, bool? enableHdr)
-            => $"{width} x {height} @ {frequency}Hz{(enableHdr == true ? " (HDR)" : enableHdr == false ? " (No HDR)" : "")}";
+        public static string ToString(int width, int height, int frequency, bool? enableHdr, Hotkey? hotkey)
+            => $"{width} x {height} @ {frequency}Hz{(enableHdr == true ? " (HDR)" : enableHdr == false ? " (No HDR)" : "")}{(hotkey != null ? $" [ {hotkey.ToString()} ]" : "")}";
 
-        public static string ToString(uint width, uint height, uint frequency, bool? enableHdr)
-            => $"{width} x {height} @ {frequency}Hz{(enableHdr == true ? " (HDR)" : enableHdr == false ? " (No HDR)" : "")}";
+        public static string ToString(uint width, uint height, uint frequency, bool? enableHdr, Hotkey? hotkey)
+            => $"{width} x {height} @ {frequency}Hz{(enableHdr == true ? " (HDR)" : enableHdr == false ? " (No HDR)" : "")}{(hotkey != null ? $" [ {hotkey.ToString()} ]" : "")}";
     }
 
     public class DisplayMode : DisplayModeBase
@@ -241,14 +243,75 @@ namespace SteamResChanger
 
         public bool? SupportsHdr { get; } = null;
 
+        public override Hotkey? Hotkey
+        {
+            get => _hotkey;
+            protected set => _hotkey = value;
+        }
+        private Hotkey? _hotkey;
+
+        public void RegisterHotkey(HotkeyManager manager, Keys defaultKey = Keys.None, ModifierKeys modifiers = ModifierKeys.None)
+        {
+            if (_hotkey == null && defaultKey != Keys.None)
+                _hotkey = new(defaultKey, modifiers);
+
+            if (_hotkey != null && _hotkey.Key != Keys.None)
+                _hotkey.Id = manager.Register(_hotkey.Key, _hotkey.Modifiers);
+        }
+
+        private void UnregisterHotkey(HotkeyManager manager)
+        {
+            if (_hotkey != null)
+            {
+                if (_hotkey.Id >= 0)
+                    manager.Unregister(_hotkey.Id);
+                _hotkey.Id = -1;
+            }
+        }
+
+        public DisplayMode ChangeHotkey(Hotkey? oldHotkey, HotkeyManager manager, Keys newKey, ModifierKeys modifiers = ModifierKeys.None)
+        {
+            var dm = SetHotkey(oldHotkey);
+            dm.ChangeHotkey(manager, newKey, modifiers);
+            return dm;
+        }
+
+        public DisplayMode ChangeHotkey(HotkeyManager manager, Keys newKey, ModifierKeys modifiers = ModifierKeys.None)
+        {
+            if (newKey != _hotkey?.Key || modifiers != _hotkey?.Modifiers)
+            {
+                if (_hotkey != null && _hotkey.Id >= 0)
+                {
+                    if (newKey != Keys.None)
+                        manager.ChangeHotkey(_hotkey.Id, _hotkey.Key, _hotkey.Modifiers);
+                    else
+                        UnregisterHotkey(manager);
+
+                    _hotkey.Key = newKey;
+                    _hotkey.Modifiers = modifiers;
+                }
+                else
+                {
+                    _hotkey = new(newKey, modifiers);
+                    if (newKey != Keys.None)
+                        RegisterHotkey(manager);
+                }
+            }
+            return this;
+        }
+
+        public virtual DisplayMode SetHotkey(Hotkey? hotkey)
+            => new(hotkey, EnableHdr, SupportsHdr);
+
         public DisplayMode SetHDR(CheckState enableHdrState, bool? supportsHdr = null)
             => SetHDR(EnableHdrFromCheckState(enableHdrState), supportsHdr);
 
         public virtual DisplayMode SetHDR(bool? enableHdr, bool? supportsHdr = null)
-            => new(enableHdr, supportsHdr);
+            => new(Hotkey, enableHdr, supportsHdr);
 
-        protected DisplayMode(bool? enableHdr, bool? supportsHdr = null)
+        protected DisplayMode(Hotkey? hotkey, bool? enableHdr, bool? supportsHdr = null)
         {
+            _hotkey = hotkey;
             _enableHdr = enableHdr;
             SupportsHdr = supportsHdr;
         }
@@ -272,7 +335,7 @@ namespace SteamResChanger
 
             // Robust parsing using regex
             var match = Regex.Match(value,
-                @"(?<w>\d+)\s*x\s*(?<h>\d+)\s*[@x]\s*(?<f>\d+)\s*(?:Hz)?\s*(?:\(?(?<hdr>HDR)?(?<nohdr>No\s*HDR)?\)?)?",
+                @"(?<w>\d+)\s*x\s*(?<h>\d+)\s*[@x]\s*(?<f>\d+)\s*(?:Hz)?\s*(?:\(?(?<hdr>HDR)?(?<nohdr>No\s*HDR)?\)?)?\s*(?:\[\s*(?<hotkey>.*)\s*\])?",
                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
             if (!match.Success)
@@ -286,6 +349,9 @@ namespace SteamResChanger
                 : match.Groups.ContainsKey("nohdr") && match.Groups["nohdr"].Success ? false
                 : null;
 
+            Hotkey? hotkey =
+                match.Groups.ContainsKey("hotkey") && match.Groups["hotkey"].Success ? Hotkey.FromString(match.Groups["hotkey"].Value) : null;
+
             if (width <= 0) throw new ArgumentOutOfRangeException(nameof(width), "Width must be greater than 0");
             if (height <= 0) throw new ArgumentOutOfRangeException(nameof(height), "Height must be greater than 0");
             if (frequency <= 0) throw new ArgumentOutOfRangeException(nameof(frequency), "Frequency must be greater than 0");
@@ -293,10 +359,13 @@ namespace SteamResChanger
             DisplayMode? parsed = supportedResolutions.FirstOrDefault(res => res.Equals(width, height, frequency));
 
             if (parsed == null)
-                throw new ArgumentException($"Not a supported display mode: '{DisplayMode.ToString(width, height, frequency, hdr)}'", nameof(value));
+                throw new ArgumentException($"Not a supported display mode: '{DisplayMode.ToString(width, height, frequency, hdr, hotkey)}'", nameof(value));
 
             if (hdr != null)
                 parsed = parsed.SetHDR(hdr.Value);
+
+            parsed.Hotkey = hotkey;
+
             return parsed;
         }
     }
@@ -309,10 +378,13 @@ namespace SteamResChanger
         public override uint Height => DevMode.PixelsHeight;
         public override uint Frequency => DevMode.DisplayFrequency;
 
-        public override DisplayMode SetHDR(bool? enableHdr, bool? supportsHdr = null)
-            => new DisplayModeWindows(DevMode, enableHdr, supportsHdr);
+        public override DisplayMode SetHotkey(Hotkey? hotkey)
+            => new DisplayModeWindows(DevMode, hotkey, EnableHdr, SupportsHdr);
 
-        public DisplayModeWindows(DeviceMode dm, bool? enableHdr = null, bool? supportsHdr = null) : base(enableHdr, supportsHdr)
+        public override DisplayMode SetHDR(bool? enableHdr, bool? supportsHdr = null)
+            => new DisplayModeWindows(DevMode, Hotkey, enableHdr, supportsHdr);
+
+        public DisplayModeWindows(DeviceMode dm, Hotkey? hotkey = null, bool? enableHdr = null, bool? supportsHdr = null) : base(hotkey, enableHdr, supportsHdr)
             => DevMode = dm;
     }
 }

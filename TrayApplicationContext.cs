@@ -73,13 +73,17 @@ namespace SteamResChanger
             MessageBoxExtensions.ShowErrorMessage(e.ExceptionObject as Exception, e.IsTerminating);
 
             if (e.IsTerminating)
+            {
+                HotkeyManager.UnregisterAllHandles();
                 SteamHelper.UnmonitorAll();
+            }
         }
 
         private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
             MessageBoxExtensions.ShowErrorMessage(e.Exception, false, true);
 
+            HotkeyManager.UnregisterAllHandles();
             SteamHelper.UnmonitorAll();
         }
 
@@ -178,6 +182,7 @@ namespace SteamResChanger
             _trayIcon?.Dispose();
             _trayIcon = null;
 
+            HotkeyManager.UnregisterAllHandles();
             SteamHelper.UnmonitorAll();
 
             ExitThread(); // this actually stops Application.Run()

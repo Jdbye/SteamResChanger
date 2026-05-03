@@ -24,6 +24,13 @@ namespace SteamResChanger
             }
         }
 
+        [YamlMember(Alias = "hdr_toggle")]
+        public string HdrToggleString
+        {
+            get => HdrToggle.ToString();
+            set { try { HdrToggle = Hotkey.FromString(value); } catch { } }
+        }
+
         public bool ShowTooltip { get; set; } = true;
 
         public bool IgnoreVrGames { get; set; } = true;
@@ -39,6 +46,9 @@ namespace SteamResChanger
 
         [YamlIgnore]
         public static DisplayMode[] SupportedResolutions { get; set; } = Array.Empty<DisplayMode>();
+
+        [YamlIgnore]
+        public Hotkey HdrToggle { get; set; } = new(Keys.H, ModifierKeys.ControlShift);
 
         public bool DebugMode { get; set; } = false;
 
