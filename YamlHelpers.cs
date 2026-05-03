@@ -39,6 +39,14 @@ namespace SteamResChanger
             return instance;
         }
 
+        public static T CreateYaml<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] T>(string path, T defaults) where T : new()
+        {
+            var fpath = Path.IsPathRooted(path) ? path : Path.Combine(Path.GetDirectoryName(Environment.ProcessPath)!, path);
+
+            WriteYaml(fpath, defaults);
+            return defaults;
+        }
+
         public static bool WriteYaml<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] T>(string path, T instance)
         {
             var fpath = Path.IsPathRooted(path) ? path : Path.Combine(Path.GetDirectoryName(Environment.ProcessPath)!, path);
