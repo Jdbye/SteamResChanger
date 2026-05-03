@@ -60,8 +60,8 @@ namespace SteamResChanger
             }
 
             InitializeComponent();
-            comboPresets = [comboPreset1, comboPreset2, comboPreset3, comboPreset4, comboPreset5];
-            chkPresetsHDR = [chkPresetHDR1, chkPresetHDR2, chkPresetHDR3, chkPresetHDR4, chkPresetHDR5];
+            comboPresets = [comboPreset1, comboPreset2, comboPreset3, comboPreset4, comboPreset5, comboPreset6, comboPreset7, comboPreset8, comboPreset9, comboPreset0];
+            chkPresetsHDR = [chkPresetHDR1, chkPresetHDR2, chkPresetHDR3, chkPresetHDR4, chkPresetHDR5, chkPresetHDR6, chkPresetHDR7, chkPresetHDR8, chkPresetHDR9, chkPresetHDR0];
         }
 
         private void SetComboBoxItems(ComboBox combo, CheckBox hdr, IEnumerable items, object? selected)
