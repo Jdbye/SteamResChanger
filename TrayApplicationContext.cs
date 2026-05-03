@@ -115,6 +115,11 @@ namespace SteamResChanger
                     _itmHdrSeparator.Visible = false;
                 }
 
+                if (_form != null)
+                    _itmHdr.Text = $" &HDR [ {_form.Config.HdrToggle.ToString()} ]";
+                else
+                    _itmHdr.Text = " &HDR";
+
                 foreach (var itm in _itmPresetRes)
                     _menu.Items.Remove(itm);
 
