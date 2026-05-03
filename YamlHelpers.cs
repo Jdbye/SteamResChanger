@@ -8,7 +8,7 @@ namespace SteamResChanger
     {
         public static T? LoadYaml<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] T>(string path)
         {
-            var fpath = Path.GetFullPath(path);
+            var fpath = Path.IsPathRooted(path) ? path : Path.Combine(Path.GetDirectoryName(Environment.ProcessPath)!, path);
 
             if (File.Exists(fpath))
             {
@@ -20,7 +20,7 @@ namespace SteamResChanger
                     .Build();
 
                     var instance = deserializer.Deserialize<T>(File.ReadAllText(fpath));
-                    WriteYaml<T>(path, instance); // Rewrite it to add any new config options
+                    WriteYaml<T>(fpath, instance); // Rewrite it to add any new config options
 
                     return instance;
                 }
@@ -32,15 +32,16 @@ namespace SteamResChanger
 
         public static T CreateYaml<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] T>(string path) where T : new()
         {
-            var fpath = Path.GetFullPath(path);
+            var fpath = Path.IsPathRooted(path) ? path : Path.Combine(Path.GetDirectoryName(Environment.ProcessPath)!, path);
+
             T instance = new();
-            WriteYaml(path, instance);
+            WriteYaml(fpath, instance);
             return instance;
         }
 
         public static bool WriteYaml<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] T>(string path, T instance)
         {
-            var fpath = Path.GetFullPath(path);
+            var fpath = Path.IsPathRooted(path) ? path : Path.Combine(Path.GetDirectoryName(Environment.ProcessPath)!, path);
 
             try
             {
