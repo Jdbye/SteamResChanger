@@ -25,7 +25,7 @@ namespace SteamResChanger
         public void SetHotkey(Keys key, ModifierKeys modifiers)
         {
             Key = key;
-            Modifiers = modifiers;
+            Modifiers = key != Keys.None ? modifiers : SteamResChanger.ModifierKeys.None;
             UpdateText();
         }
 
@@ -41,16 +41,44 @@ namespace SteamResChanger
             StopRecording(cancel: true);
         }
 
+        protected override bool IsInputKey(Keys keyData)
+            => true;
+
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (!_isRecording)
+            if (_isRecording)
+            {
+                e.SuppressKeyPress = true;
+                e.Handled = true;
+                HandleKey(e.KeyData);
                 return;
+            }
 
-            e.SuppressKeyPress = true;
-            e.Handled = true;
+            base.OnKeyDown(e);
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            // Prevent normal textbox shortcuts like Ctrl+C, Ctrl+V
+            if (_isRecording)
+            {
+                HandleKey(keyData);
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        protected void HandleKey(Keys keyData)
+        {
+            Keys key = keyData & Keys.KeyCode;
+
+            bool ctrl = keyData.HasFlag(Keys.Control);
+            bool shift = keyData.HasFlag(Keys.Shift);
+            bool alt = keyData.HasFlag(Keys.Alt);
 
             // Cancel
-            if (e.KeyCode == Keys.Escape)
+            if (key == Keys.Escape)
             {
                 StopRecording(cancel: true);
                 return;
@@ -59,7 +87,7 @@ namespace SteamResChanger
             var win = IsWinPressed();
 
             // Clear
-            if ((e.KeyCode == Keys.Back || e.KeyCode == Keys.Delete) && !e.Control && !e.Shift && !e.Alt && !win)
+            if ((key == Keys.Back || key == Keys.Delete) && !ctrl && !shift && !alt && !win)
             {
                 Key = Keys.None;
                 Modifiers = SteamResChanger.ModifierKeys.None;
@@ -70,25 +98,16 @@ namespace SteamResChanger
             // Capture modifiers
             Modifiers = SteamResChanger.ModifierKeys.None;
 
-            if (e.Control) Modifiers |= SteamResChanger.ModifierKeys.Control;
-            if (e.Shift) Modifiers |= SteamResChanger.ModifierKeys.Shift;
-            if (e.Alt) Modifiers |= SteamResChanger.ModifierKeys.Alt;
+            if (ctrl) Modifiers |= SteamResChanger.ModifierKeys.Control;
+            if (shift) Modifiers |= SteamResChanger.ModifierKeys.Shift;
+            if (alt) Modifiers |= SteamResChanger.ModifierKeys.Alt;
             if (win) Modifiers |= SteamResChanger.ModifierKeys.Win;
 
-            Key = IsModifierKey(e.KeyCode) ? Keys.None : e.KeyCode;
+            Key = IsModifierKey(key) ? Keys.None : key;
 
             UpdateText();
             if (Key != Keys.None)
                 HotkeyChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            // Prevent normal textbox shortcuts like Ctrl+C, Ctrl+V
-            if (_isRecording)
-                return true;
-
-            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private void StartRecording()
@@ -127,8 +146,8 @@ namespace SteamResChanger
 
         private static bool IsWinPressed()
         {
-            return (Control.ModifierKeys & Keys.LWin) == Keys.LWin ||
-                   (Control.ModifierKeys & Keys.RWin) == Keys.RWin;
+            return Control.ModifierKeys.HasFlag(Keys.LWin)
+                || Control.ModifierKeys.HasFlag(Keys.RWin);
         }
     }
 }
